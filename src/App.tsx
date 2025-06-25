@@ -1,57 +1,33 @@
 import "./App.css";
-import AddProductForm from "./components/vendors/AddProductForm";
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import VendorProducts from "./components/vendors/Products";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-import Root from "./components/customers/Root.tsx";
-import Cart from "./components/customers/Cart/Cart.tsx";
-import Checkout from "./components/customers/Checkout.tsx";
-import ProductList from "./components/customers/Product/ProductList.tsx";
-import VendorRoot from "./components/vendors/VendorRoot.tsx";
+import HomePageNew from "./components/HomePageNew";
+import AdminDashboard from './components/admin/AdminDashboard';
+import FAQ from './components/FAQ';
+import CustomerDashboard from './components/customers/CustomerDashboard';
+import VendorDashboard from './components/vendors/VendorDashboard';
+import { UserProvider } from './components/UserContext';
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <HomePageNew />,
+  },
+  {
     path: "/customer",
-    element: <Root />,
-    children: [
-      {
-        path: "",
-        element: <ProductList />,
-      },
-      {
-        path: "cart",
-        element: <Cart />,
-      },
-      {
-        path: "checkout",
-        element: <Checkout />,
-      },
-    ],
+    element: <CustomerDashboard />,
   },
   {
     path: "/vendor",
-    element: <VendorRoot />,
-    children: [
-      {
-        path: "",
-        element: (
-          <div>
-            <AddProductForm />
-            <VendorProducts />
-          </div>
-        ),
-      },
-      {
-        path: "cart",
-        element: <Cart />,
-      },
-      {
-        path: "checkout",
-        element: <Checkout />,
-      },
-    ],
+    element: <VendorDashboard />,
+  },
+  {
+    path: "/admin",
+    element: <AdminDashboard />,
+  },
+  {
+    path: '/faq',
+    element: <FAQ />,
   },
 ]);
 
@@ -60,7 +36,9 @@ const theme = createTheme();
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </ThemeProvider>
   );
 }
