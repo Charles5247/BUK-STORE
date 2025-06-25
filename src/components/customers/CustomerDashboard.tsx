@@ -7,7 +7,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { useState, useEffect } from 'react';
-import { useUser } from '../UserContext';
+import { useUser } from '../../hooks/useUser';
 import { getCustomerStats, getCustomerOrders, getCustomerWishlist, updateCustomerProfile } from '../../lib/commerce';
 
 const drawerWidth = 220;

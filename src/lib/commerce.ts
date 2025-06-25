@@ -58,8 +58,9 @@ export async function loginUser(email: string, password: string): Promise<{ succ
       password
     });
     return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Login failed');
+  } catch (error: unknown) {
+    const axiosError = error as { response?: { data?: { message?: string } } };
+    throw new Error(axiosError.response?.data?.message || 'Login failed');
   }
 }
 
@@ -71,24 +72,25 @@ export async function registerUser(userData: RegisterUserData): Promise<{ succes
       password: userData.password
     });
     return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Registration failed');
+  } catch (error: unknown) {
+    const axiosError = error as { response?: { data?: { message?: string } } };
+    throw new Error(axiosError.response?.data?.message || 'Registration failed');
   }
 }
 
 // Customer functions
-export async function getCustomerStats(userId: number): Promise<any[]> {
-  const res = await axios.get<any[]>(`${API_URL}/customers/${userId}/stats`);
+export async function getCustomerStats(userId: number): Promise<Array<{ label: string; value: string | number }>> {
+  const res = await axios.get<Array<{ label: string; value: string | number }>>(`${API_URL}/customers/${userId}/stats`);
   return res.data;
 }
 
-export async function getCustomerOrders(userId: number): Promise<any[]> {
-  const res = await axios.get<any[]>(`${API_URL}/customers/${userId}/orders`);
+export async function getCustomerOrders(userId: number): Promise<Array<{ id: number; product: string; productImage: string; status: string; amount: string; date: string }>> {
+  const res = await axios.get<Array<{ id: number; product: string; productImage: string; status: string; amount: string; date: string }>>(`${API_URL}/customers/${userId}/orders`);
   return res.data;
 }
 
-export async function getCustomerWishlist(userId: number): Promise<any[]> {
-  const res = await axios.get<any[]>(`${API_URL}/customers/${userId}/wishlist`);
+export async function getCustomerWishlist(userId: number): Promise<Array<{ id: number; name: string; price: string }>> {
+  const res = await axios.get<Array<{ id: number; name: string; price: string }>>(`${API_URL}/customers/${userId}/wishlist`);
   return res.data;
 }
 
@@ -102,18 +104,18 @@ export async function updateCustomerProfile(userId: number, profileData: FormDat
 }
 
 // Vendor functions
-export async function getVendorStats(userId: number): Promise<any[]> {
-  const res = await axios.get<any[]>(`${API_URL}/vendors/${userId}/stats`);
+export async function getVendorStats(userId: number): Promise<Array<{ label: string; value: string | number }>> {
+  const res = await axios.get<Array<{ label: string; value: string | number }>>(`${API_URL}/vendors/${userId}/stats`);
   return res.data;
 }
 
-export async function getVendorProducts(userId: number): Promise<any[]> {
-  const res = await axios.get<any[]>(`${API_URL}/vendors/${userId}/products`);
+export async function getVendorProducts(userId: number): Promise<Array<{ id: number; name: string; price: number; category: string; stock: number }>> {
+  const res = await axios.get<Array<{ id: number; name: string; price: number; category: string; stock: number }>>(`${API_URL}/vendors/${userId}/products`);
   return res.data;
 }
 
-export async function getVendorOrders(userId: number): Promise<any[]> {
-  const res = await axios.get<any[]>(`${API_URL}/vendors/${userId}/orders`);
+export async function getVendorOrders(userId: number): Promise<Array<{ id: number; customer: string; product: string; status: string; amount: string; date: string }>> {
+  const res = await axios.get<Array<{ id: number; customer: string; product: string; status: string; amount: string; date: string }>>(`${API_URL}/vendors/${userId}/orders`);
   return res.data;
 }
 
@@ -127,8 +129,8 @@ export async function updateVendorProfile(userId: number, profileData: FormData)
 }
 
 // Delivery options
-export async function getDeliveryOptions(country?: string): Promise<any[]> {
+export async function getDeliveryOptions(country?: string): Promise<Array<{ method: string; cost: number; eta: string }>> {
   const params = country ? { country } : {};
-  const res = await axios.get<any[]>(`${API_URL}/delivery-options`, { params });
+  const res = await axios.get<Array<{ method: string; cost: number; eta: string }>>(`${API_URL}/delivery-options`, { params });
   return res.data;
 }

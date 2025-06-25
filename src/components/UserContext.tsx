@@ -1,10 +1,19 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 export interface User {
-  name: string;
+  id: number;
+  name?: string;
+  businessName?: string;
   email: string;
   type: 'customer' | 'vendor';
-  [key: string]: any;
+  phone?: string;
+  studentId?: string;
+  userType?: string;
+  city?: string;
+  country?: string;
+  avatar?: string;
+  logo?: string;
+  businessType?: string;
 }
 
 export const UserContext = createContext<{
@@ -58,6 +67,4 @@ export const UserProvider = ({ children }) => {
       {children}
     </UserContext.Provider>
   );
-};
-
-export const useUser = () => useContext(UserContext); 
+}; 
